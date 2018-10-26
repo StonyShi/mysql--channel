@@ -59,7 +59,7 @@ public class ConnectorTest {
             @Override
             public void onEvent(BinlogEvent event) {
                 try {
-                    System.out.println(JsonUtil.getUtil().toString(event));
+                    System.out.println(JsonUtil.toString(event));
                     System.out.println();
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();

@@ -19,33 +19,44 @@ import java.util.BitSet;
  * @version 下午12:26
  * @since 2018/10/25
  */
-public class JsonUtil {
-    static JsonUtil util = new JsonUtil();
-    ObjectMapper mapper;
-    private JsonUtil() {
-        mapper = new ObjectMapper();
-        mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        mapper.enable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+public abstract class JsonUtil {
 
+    final static JsonHelper JSON_HELPER = new JsonHelper();
 
-        SimpleModule module = new SimpleModule();
-        module.addSerializer(BitSet.class, new BitSetSerializer());
-        module.addDeserializer(BitSet.class, new BitSetDeserializer());
-        mapper.registerModule(module);
-    }
-    public static JsonUtil getUtil(){
-        return util;
-    }
-    public String toString(Object value) throws JsonProcessingException {
-        return mapper.writeValueAsString(value);
+    public static String toString(Object value) throws JsonProcessingException {
+        return JSON_HELPER.toString(value);
     }
 
-    public <T> T toObject(String value, Class<T> clazz) throws IOException {
-        return mapper.readValue(value, clazz);
+    public static <T> T toObject(String value, Class<T> clazz) throws IOException {
+        return JSON_HELPER.toObject(value, clazz);
     }
-    public <T> T toObject(String value, TypeReference<T> valueTypeRef) throws IOException {
-        return mapper.readValue(value, valueTypeRef);
+    public static <T> T toObject(String value, TypeReference<T> valueTypeRef) throws IOException {
+        return JSON_HELPER.toObject(value, valueTypeRef);
+    }
+
+    private static final class JsonHelper{
+        ObjectMapper mapper;
+        private JsonHelper() {
+            mapper = new ObjectMapper();
+            mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+            mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+            mapper.enable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+
+
+            SimpleModule module = new SimpleModule();
+            module.addSerializer(BitSet.class, new BitSetSerializer());
+            module.addDeserializer(BitSet.class, new BitSetDeserializer());
+            mapper.registerModule(module);
+        }
+        String toString(Object value) throws JsonProcessingException {
+            return mapper.writeValueAsString(value);
+        }
+        <T> T toObject(String value, Class<T> clazz) throws IOException {
+            return mapper.readValue(value, clazz);
+        }
+        <T> T toObject(String value, TypeReference<T> valueTypeRef) throws IOException {
+            return mapper.readValue(value, valueTypeRef);
+        }
     }
 
 }
