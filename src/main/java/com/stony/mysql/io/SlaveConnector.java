@@ -106,7 +106,7 @@ public class SlaveConnector extends BaseConnector {
                 if(!auth(byteBuffer.remainingData())) {
                     throw new XException(String.format("认证异常[%s, %s]异常", username, password));
                 }
-                logger.info(String.format("认证异常[%s, %s]通过.", username, password));
+                logger.info(String.format("认证服务[%s, %s]通过.", username, password));
                 this.isAuth = true;
             } catch (IOException e) {
                 throw new XException(String.format("连接到[%s:%d]异常", hostname, port), e);
@@ -132,6 +132,8 @@ public class SlaveConnector extends BaseConnector {
                         if (resultSet.next()) {
                             binlogFileName = resultSet.getString(0);
                             binlogPosition = resultSet.getLong(1);
+                        } else {
+                            throw new XException(String.format("服务[%s:%d]没有开启log-bin.", hostname, port));
                         }
                     }
                 }

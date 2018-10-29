@@ -68,6 +68,45 @@ show columns from t3;
 select * from test.t3 limit 0;
 
 
+CREATE TABLE `t4` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `driver_id` bigint(21) NOT NULL,
+  `order_id` varchar(128) NOT NULL,
+  `status` int(11) NOT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `order_time` datetime NOT NULL,
+  `t_no` char(4),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `t4_repeat_index` (`driver_id`,`order_id`,`status`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+insert into t4(driver_id, order_id, status, price, order_time, t_no) values (923233, '10345164564564563', 0, 10.5, now(),'n300');
+
+
+CREATE TABLE `t5` (
+  `id` bigint(20) NOT NULL,
+  `input` varchar(4000) DEFAULT NULL,
+  `is_ok` bit(1) NOT NULL,
+  `carid` char(4) NOT NULL,
+  `serde_id` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `t5` (`id`, `input`, `is_ok`, carid, serde_id) VALUES (11, '你好呀发撒地方', 0, 'no24', 234234545);
+
+CREATE TABLE `t6` (
+  `id` int(11) NOT NULL,
+  `birth_date` date NOT NULL,
+  `first_name` varchar(20) NOT NULL,
+  `last_name` varchar(2000) NOT NULL,
+  `gender` enum('M','F') NOT NULL,
+  `hire_date` date NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `t6` (`id`, `birth_date`, `first_name`, last_name, gender, hire_date) VALUES (13, now(), 'Ruve', 'Uok', 'M', now());
+
+
 CREATE USER 'slave'@'%.%.%.%' IDENTIFIED BY 'slave';
 GRANT REPLICATION SLAVE ON *.* TO 'slave'@'%.%.%.%';
 GRANT REPLICATION CLIENT ON *.* TO 'slave'@'%.%.%.%';

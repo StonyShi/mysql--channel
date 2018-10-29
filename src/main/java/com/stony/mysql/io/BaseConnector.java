@@ -1,6 +1,7 @@
 package com.stony.mysql.io;
 
 import com.stony.mysql.event.BinlogEvent;
+import com.stony.mysql.event.ErrorEvent;
 import com.stony.mysql.event.EventListener;
 import com.stony.mysql.filter.Filter;
 
@@ -42,6 +43,11 @@ public abstract class BaseConnector implements Connector, Filter{
     public void onEvent(final BinlogEvent event) {
         if(event == null) {
             return;
+        }
+        if(event.hasErr()) {
+            if(event.getEvent() != null && event.getEvent() instanceof ErrorEvent) {
+                throw new RuntimeException(String.format("#%s,%s", ((ErrorEvent) event.getEvent()).getState(), ((ErrorEvent) event.getEvent()).getMsg()));
+            }
         }
         if(this.test(event)) {
             EventListener[] listeners = getListeners();

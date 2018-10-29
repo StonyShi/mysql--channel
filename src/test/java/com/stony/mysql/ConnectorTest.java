@@ -30,9 +30,15 @@ import static com.stony.mysql.protocol.EventType.*;
  */
 public class ConnectorTest {
 
+        /** 5.5 **/
+//    static String host = "10.0.11.172";
+//    static int port = 3311;
 
-    static String host = "10.0.11.172";
-    static int port = 3311;
+    /** 5.6 **/
+    static String host = "10.0.11.126";
+    static int port = 3306;
+
+
     static String username = "slave";
     static String password = "slave";
 
@@ -45,8 +51,8 @@ public class ConnectorTest {
         SlaveConnector connector = new SlaveConnector(host, port, username, password);
         connector.setServerId(5);
 
-        connector.addFilter(new EventFilter(new EventType[]{UPDATE_ROWS_EVENT, DELETE_ROWS_EVENT, WRITE_ROWS_EVENT}));
-        connector.addFilter(new DatabaseFilter(new String[]{"test"}));
+//        connector.addFilter(new EventFilter(new EventType[]{UPDATE_ROWS_EVENT, DELETE_ROWS_EVENT, WRITE_ROWS_EVENT}));
+//        connector.addFilter(new DatabaseFilter(new String[]{"test"}));
 
         connector.registerListener(event -> {
             try {
@@ -55,17 +61,17 @@ public class ConnectorTest {
                 e.printStackTrace();
             }
         });
-        connector.registerListener(new EventListener() {
-            @Override
-            public void onEvent(BinlogEvent event) {
-                try {
-                    System.out.println(JsonUtil.toString(event));
-                    System.out.println();
-                } catch (JsonProcessingException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+//        connector.registerListener(new EventListener() {
+//            @Override
+//            public void onEvent(BinlogEvent event) {
+//                try {
+//                    System.out.println(JsonUtil.toString(event));
+//                    System.out.println();
+//                } catch (JsonProcessingException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
         connector.startAndAwait();
         connector.shutdown();
     }
