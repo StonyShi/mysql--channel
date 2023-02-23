@@ -1,7 +1,7 @@
-## mysql 协议 binlog 解析
+# mysql 协议 binlog 解析
 
 
-### SlaveConnector  远程连接 binlog event接收
+## SlaveConnector  远程连接 binlog event接收
 ```
 SlaveConnector connector = new SlaveConnector(host, port, username, password);
 connector.setServerId(5);
@@ -31,7 +31,7 @@ connector.startAndAwait();
 connector.shutdown();
 ```
 
-### binlog 文件解析
+## binlog 文件解析
 
 ```
 FileConnector connector = new FileConnector("/Users/stony/Downloads/my-bin.000032");
@@ -71,3 +71,11 @@ connector.registerListener(event -> {
 connector.startAndAwait();
 connector.shutdown();
 ```
+
+
+
+# mysql 协议文档
+
+
+https://segmentfault.com/a/1190000038549577
+
